@@ -7,7 +7,7 @@ class AuthService {
       headers: {
         "Content-Type": "application/json",
       },
-      withCredentials: true, // Set credentials here
+      withCredentials: true,
     });
   }
 
@@ -54,7 +54,8 @@ class AuthService {
 
   async getCurrentUser() {
     try {
-      return await this.axiosInstance.get("/users/current-user");
+      const response = await this.axiosInstance.get("/users/current-user");
+      return response?.data?.data;
     } catch (error) {
       console.log("Appwrite serive :: getCurrentUser :: error", error);
       return null;

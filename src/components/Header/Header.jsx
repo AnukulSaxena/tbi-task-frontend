@@ -21,8 +21,10 @@ const Header = () => {
     },
   ];
   return (
-    <div className="w-full flex justify-between items-center px-20 h-14 absolute top-0 left-0 shadow-xl">
-      <div>Home</div>
+    <div className="w-full flex justify-between items-center px-5 sm:px-20 h-14 absolute top-0 left-0 shadow-xl">
+      <div>
+        <i className="ri-ghost-smile-line "></i>
+      </div>
       <div>
         <ul className="flex gap-5">
           {navItems.map((item, index) => {

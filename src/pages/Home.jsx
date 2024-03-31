@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const { status, setStatus, userData, setUserData } = useMyContext();
   const navigate = useNavigate();
-  const username = "something";
   const handleLogOut = () => {
     if (status) {
       authService
