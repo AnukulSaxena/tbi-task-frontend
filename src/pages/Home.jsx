@@ -9,10 +9,13 @@ const Home = () => {
   const username = "something";
   const handleLogOut = () => {
     if (status) {
-      authService.logoutAccount().then((res) => {
-        setUserData(null);
-        setStatus(false);
-      });
+      authService
+        .logoutAccount()
+        .then((res) => {
+          setUserData(null);
+          setStatus(false);
+        })
+        .catch((err) => console.error(err));
     } else {
       navigate("/login");
     }

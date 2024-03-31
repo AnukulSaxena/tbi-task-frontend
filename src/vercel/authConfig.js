@@ -3,7 +3,7 @@ import axios from "axios";
 class AuthService {
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: "http://localhost:3000/api/v1",
+      baseURL: "https://tbi-task.vercel.app/api/v1",
       headers: {
         "Content-Type": "application/json",
       },
