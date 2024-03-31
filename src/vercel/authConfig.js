@@ -72,6 +72,19 @@ class AuthService {
       throw error;
     }
   }
+
+  async changePassword(data) {
+    try {
+      const response = await this.axiosInstance.post(
+        "/users/change-password",
+        data
+      );
+      console.log(response);
+    } catch (error) {
+      console.log("Appwrite serive :: Change Password :: error", error);
+      throw error?.response?.data;
+    }
+  }
 }
 
 const authService = new AuthService();

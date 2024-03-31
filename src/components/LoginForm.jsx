@@ -83,7 +83,7 @@ const LoginForm = () => {
         <div className="w-full flex justify-center h-fit">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-12 w-28 rounded mt-4 flex justify-center items-center"
           >
             {loading ? <Spinner /> : "Log In"}
           </button>
