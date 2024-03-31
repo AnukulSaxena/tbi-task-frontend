@@ -1,7 +1,12 @@
 import React from "react";
+import LoginForm from "../components/LoginForm";
 
 const Login = () => {
-  return <div>Login</div>;
+  return (
+    <div className="flex justify-center items-center h-full w-full">
+      <LoginForm />
+    </div>
+  );
 };
 
 export default Login;
