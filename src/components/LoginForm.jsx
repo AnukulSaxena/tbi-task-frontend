@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import Input from "./Input.jsx";
 import { useNavigate } from "react-router-dom";
+import authService from "../vercel/authConfig.js";
+import { useMyContext } from "./MyContext.jsx";
 const LoginForm = () => {
+  const { setStatus, setUserData } = useMyContext();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-
+  const [serverError, setServerError] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -33,6 +36,19 @@ const LoginForm = () => {
 
     if (Object.keys(newErrors).length === 0) {
       console.log("Form submitted:", formData);
+      authService
+        .loginAccount(formData)
+        .then((res) => setUserData(res?.data?.user))
+        .then(() => {
+          setStatus(true);
+          setServerError("");
+          setFormData({
+            username: "",
+            password: "",
+          });
+          navigate("/");
+        })
+        .catch((err) => setServerError(err.message));
     }
     setErrors(newErrors);
   };
@@ -40,6 +56,7 @@ const LoginForm = () => {
   return (
     <div className="sm:w-[30rem] w-96 h-[30rem]">
       <h1 className="text-center text-2xl font-semibold py-4">Login</h1>
+      <p className="text-red-500 text-sm text-center">{serverError}</p>
       <form onSubmit={handleSubmit}>
         <Input
           label="Username"
@@ -73,7 +90,7 @@ const LoginForm = () => {
           className=" cursor-pointer underline font-semibold"
           onClick={handleSignInClick}
         >
-          Log In
+          Sign Up
         </span>
       </p>
     </div>

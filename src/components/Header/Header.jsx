@@ -1,18 +1,23 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useMyContext } from "../MyContext";
 const Header = () => {
+  const { status } = useMyContext();
   const navItems = [
     {
       name: "Home",
       slug: "/",
+      status: true,
     },
     {
       name: "Login",
       slug: "/login",
+      status: !status,
     },
     {
       name: "Signup",
       slug: "/signup",
+      status: !status,
     },
   ];
   return (
@@ -22,16 +27,20 @@ const Header = () => {
         <ul className="flex gap-5">
           {navItems.map((item, index) => {
             return (
-              <li>
-                <NavLink
-                  className={({ isActive, isPending }) =>
-                    isActive ? "underline underline-offset-4 font-semibold" : ""
-                  }
-                  to={item.slug}
-                >
-                  {item.name}
-                </NavLink>
-              </li>
+              item.status && (
+                <li key={index}>
+                  <NavLink
+                    className={({ isActive, isPending }) =>
+                      isActive
+                        ? "underline underline-offset-4 font-semibold"
+                        : ""
+                    }
+                    to={item.slug}
+                  >
+                    {item.name}
+                  </NavLink>
+                </li>
+              )
             );
           })}
         </ul>

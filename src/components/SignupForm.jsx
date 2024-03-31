@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Input from "./Input.jsx";
 import { useNavigate } from "react-router-dom";
+import authService from "../vercel/authConfig.js";
 const SignupForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -8,6 +9,7 @@ const SignupForm = () => {
     username: "",
     password: "",
   });
+  const [serverError, setServerError] = useState("");
 
   const [errors, setErrors] = useState({});
 
@@ -23,18 +25,30 @@ const SignupForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
-    if (!formData.email) {
+    if (!formData?.email) {
       newErrors.email = "Email is required";
     }
-    if (!formData.username) {
+    if (!formData?.username) {
       newErrors.username = "Username is required";
     }
-    if (!formData.password) {
+    if (!formData?.password) {
       newErrors.password = "Password is required";
     }
 
     if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted:", formData);
+      authService
+        .createAccount(formData)
+        .then((res) => console.log(res))
+        .then(() => {
+          setServerError("");
+          setFormData({
+            email: "",
+            username: "",
+            password: "",
+          });
+          navigate("/login");
+        })
+        .catch((err) => setServerError(err.message));
     }
     setErrors(newErrors);
   };
@@ -42,6 +56,7 @@ const SignupForm = () => {
   return (
     <div className="sm:w-[30rem] w-96 h-[30rem]">
       <h1 className="text-center text-2xl font-semibold py-4">Signup</h1>
+      <p className="text-red-500 text-sm text-center">{serverError}</p>
       <form onSubmit={handleSubmit}>
         <Input
           label="Email"
