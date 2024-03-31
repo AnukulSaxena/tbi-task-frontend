@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import Input from "./Input.jsx";
 import { useNavigate } from "react-router-dom";
 import authService from "../vercel/authConfig.js";
+import Spinner from "./Spinner.jsx";
 const SignupForm = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     email: "",
     username: "",
     password: "",
   });
-  const [serverError, setServerError] = useState("");
-
-  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,12 +36,12 @@ const SignupForm = () => {
       newErrors.password = "Password is required";
     }
 
-    if (Object.keys(newErrors).length === 0) {
+    if (Object.keys(newErrors).length === 0 && !loading) {
+      setLoading(true);
+      setServerError("");
       authService
         .createAccount(formData)
-        .then((res) => console.log(res))
         .then(() => {
-          setServerError("");
           setFormData({
             email: "",
             username: "",
@@ -48,7 +49,8 @@ const SignupForm = () => {
           });
           navigate("/login");
         })
-        .catch((err) => setServerError(err.message));
+        .catch((err) => setServerError(err.message))
+        .finally(() => setLoading(false));
     }
     setErrors(newErrors);
   };
@@ -86,9 +88,9 @@ const SignupForm = () => {
         <div className="w-full flex justify-center h-fit">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-12 w-28 rounded mt-4 flex justify-center items-center"
           >
-            Sign Up
+            {loading ? <Spinner /> : "Sign Up"}
           </button>
         </div>
       </form>

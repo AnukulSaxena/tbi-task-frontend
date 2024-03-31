@@ -3,15 +3,17 @@ import Input from "./Input.jsx";
 import { useNavigate } from "react-router-dom";
 import authService from "../vercel/authConfig.js";
 import { useMyContext } from "./MyContext.jsx";
+import Spinner from "./Spinner.jsx";
 const LoginForm = () => {
   const { setStatus, setUserData } = useMyContext();
+  const [serverError, setServerError] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  const [serverError, setServerError] = useState("");
-  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,23 +36,26 @@ const LoginForm = () => {
       newErrors.password = "Password is required";
     }
 
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted:", formData);
+    if (Object.keys(newErrors).length === 0 && !loading) {
+      console.log("ominn");
+      setLoading(true);
+
       authService
         .loginAccount(formData)
         .then((res) => setUserData(res?.data?.user))
         .then(() => {
           setStatus(true);
-          setServerError("");
           setFormData({
             username: "",
             password: "",
           });
           navigate("/");
         })
-        .catch((err) => setServerError(err.message));
+        .catch((err) => setServerError(err.message))
+        .finally(() => setLoading(false));
     }
     setErrors(newErrors);
+    setServerError("");
   };
 
   return (
@@ -80,7 +85,7 @@ const LoginForm = () => {
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
           >
-            Log In
+            {loading ? <Spinner /> : "Log In"}
           </button>
         </div>
       </form>
