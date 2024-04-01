@@ -1,8 +1,12 @@
+// Import necessary modules
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useMyContext } from "../MyContext";
+
 const Header = () => {
   const { status } = useMyContext();
+
+  // Navigation items
   const navItems = [
     {
       name: "Home",
@@ -20,6 +24,7 @@ const Header = () => {
       status: !status,
     },
   ];
+
   return (
     <div className="w-full flex justify-between items-center px-5 sm:px-20 h-14 absolute top-0 left-0 shadow-xl">
       <div>
@@ -27,6 +32,7 @@ const Header = () => {
       </div>
       <div>
         <ul className="flex gap-5">
+          {/* Render navigation items */}
           {navItems.map((item, index) => {
             return (
               item.status && (

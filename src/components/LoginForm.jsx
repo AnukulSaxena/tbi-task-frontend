@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import authService from "../vercel/authConfig.js";
 import { useMyContext } from "./MyContext.jsx";
 import Spinner from "./Spinner.jsx";
+
 const LoginForm = () => {
   const { setStatus, setUserData } = useMyContext();
   const [serverError, setServerError] = useState("");
@@ -15,19 +16,23 @@ const LoginForm = () => {
     password: "",
   });
 
+  // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Redirect to signup page
   const handleSignInClick = () => {
     navigate("/signup");
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
 
+    // Validate form fields
     if (!formData.username) {
       newErrors.username = "Username is required";
     }
@@ -36,8 +41,8 @@ const LoginForm = () => {
       newErrors.password = "Password is required";
     }
 
+    // If no validation errors and not loading, initiate login
     if (Object.keys(newErrors).length === 0 && !loading) {
-      console.log("ominn");
       setLoading(true);
 
       authService
@@ -85,12 +90,13 @@ const LoginForm = () => {
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-12 w-28 rounded mt-4 flex justify-center items-center"
           >
+            {/* Show spinner while loading */}
             {loading ? <Spinner /> : "Log In"}
           </button>
         </div>
       </form>
       <p className="text-center py-4">
-        Don't have an Account?{" "}
+        Don't have an Account? {/* Redirect to signup page */}
         <span
           className=" cursor-pointer underline font-semibold"
           onClick={handleSignInClick}

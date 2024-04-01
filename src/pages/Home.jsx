@@ -8,7 +8,10 @@ const Home = () => {
   const { status, setStatus, userData, setUserData } = useMyContext();
   const navigate = useNavigate();
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  // Function to handle logout
   const handleLogOut = () => {
+    // If user is logged in, log them out
     if (status) {
       authService
         .logoutAccount()
@@ -18,22 +21,25 @@ const Home = () => {
         })
         .catch((err) => console.error(err));
     } else {
-      navigate("/login");
+      navigate("/login"); // If user is not logged in, navigate to login page
     }
   };
 
   return (
-    <div className=" w-full flex justify-center items-center relative h-full">
-      {isFormOpen && <ChangePasswordForm setIsFormOpen={setIsFormOpen} />}
+    <div className="w-full flex justify-center items-center relative h-full">
+      {isFormOpen && <ChangePasswordForm setIsFormOpen={setIsFormOpen} />}{" "}
+      {/* Render change password form if open */}
       <div className="">
         <h1 className="font-bold text-4xl py-5 text-center">
-          Welcome {` ${userData?.username || ""}`}
+          Welcome {` ${userData?.username || ""}`}{" "}
+          {/* Display welcome message with username */}
         </h1>
+        {/* Render change password button if user is logged in */}
         {status && (
           <div className="w-96">
             <button
               onClick={() => {
-                setIsFormOpen(true);
+                setIsFormOpen(true); // Open change password form on button click
               }}
               className="w-full h-10 bg-blue-300 rounded-md"
             >
@@ -41,12 +47,14 @@ const Home = () => {
             </button>
           </div>
         )}
+        {/* Render login/logout button */}
         <div className="flex justify-center items-center">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={handleLogOut}
+            onClick={handleLogOut} // Call logout function on button click
           >
-            {status ? "Log Out" : "Log In"}
+            {status ? "Log Out" : "Log In"}{" "}
+            {/* Display "Log Out" if user is logged in, "Log In" otherwise */}
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import Input from "./Input.jsx";
 import authService from "../vercel/authConfig.js";
 import Spinner from "./Spinner.jsx";
 
+// ChangePasswordForm component
 const ChangePasswordForm = ({ setIsFormOpen }) => {
   const [serverError, setServerError] = useState("");
   const [errors, setErrors] = useState({});
@@ -12,15 +13,18 @@ const ChangePasswordForm = ({ setIsFormOpen }) => {
     newPassword: "",
   });
 
+  // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
 
+    // Validate form fields
     if (!formData.oldPassword) {
       newErrors.oldPassword = "Old Password is required";
     }
@@ -29,9 +33,9 @@ const ChangePasswordForm = ({ setIsFormOpen }) => {
       newErrors.newPassword = "New Password is required";
     }
 
+    // If no validation errors and not loading, initiate password change
     if (Object.keys(newErrors).length === 0 && !loading) {
       setLoading(true);
-      console.log(formData);
       authService
         .changePassword(formData)
         .then(() => {
@@ -40,7 +44,7 @@ const ChangePasswordForm = ({ setIsFormOpen }) => {
             newPassword: "",
           });
         })
-        .catch((err) => setServerError(err.message))
+        .catch((err) => setServerError(err.message)) // Set server error on failure
         .finally(() => setLoading(false));
     }
     setErrors(newErrors);
@@ -84,6 +88,7 @@ const ChangePasswordForm = ({ setIsFormOpen }) => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-12 w-28 rounded mt-4 flex justify-center items-center"
             >
+              {/* Show spinner while loading */}
               {loading ? <Spinner /> : "Change"}
             </button>
           </div>
@@ -92,4 +97,5 @@ const ChangePasswordForm = ({ setIsFormOpen }) => {
     </div>
   );
 };
+
 export default ChangePasswordForm;

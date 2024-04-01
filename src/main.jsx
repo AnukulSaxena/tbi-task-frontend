@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import { Error, Home, Login, Signup } from "./pages";
 import { MyContextProvider } from "./components/MyContext.jsx";
 
+// Create a browser router with specified routes using createBrowserRouter
 const router = createBrowserRouter([
   {
     path: "/",
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+
         element: <Home />,
       },
       {
@@ -28,10 +30,11 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Render the application using ReactDOM.createRoot
 ReactDOM.createRoot(document.getElementById("root")).render(
   <MyContextProvider>
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
+    <StrictMode>
+      <RouterProvider router={router} />{" "}
+    </StrictMode>
   </MyContextProvider>
 );

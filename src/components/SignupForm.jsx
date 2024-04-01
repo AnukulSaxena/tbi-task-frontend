@@ -3,6 +3,7 @@ import Input from "./Input.jsx";
 import { useNavigate } from "react-router-dom";
 import authService from "../vercel/authConfig.js";
 import Spinner from "./Spinner.jsx";
+
 const SignupForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -14,18 +15,23 @@ const SignupForm = () => {
     password: "",
   });
 
+  // Handle form input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Redirect to login page
   const handleSignInClick = () => {
     navigate("/login");
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
+
+    // Validate form fields
     if (!formData?.email) {
       newErrors.email = "Email is required";
     }
@@ -36,6 +42,7 @@ const SignupForm = () => {
       newErrors.password = "Password is required";
     }
 
+    // If no validation errors and not loading, create account
     if (Object.keys(newErrors).length === 0 && !loading) {
       setLoading(true);
       setServerError("");
@@ -90,12 +97,13 @@ const SignupForm = () => {
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold h-12 w-28 rounded mt-4 flex justify-center items-center"
           >
+            {/* Show spinner while loading */}
             {loading ? <Spinner /> : "Sign Up"}
           </button>
         </div>
       </form>
       <p className="text-center py-4">
-        Already have an Account?{" "}
+        Already have an Account? {/* Redirect to login page */}
         <span
           className=" cursor-pointer underline font-semibold"
           onClick={handleSignInClick}
