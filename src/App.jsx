@@ -24,7 +24,7 @@ function App() {
 
   // Render the main layout of the application
   return (
-    <div className="h-screen w-full pt-14 relative bg-neutral-300">
+    <div className="h-[100dvh] w-full pt-14 relative bg-neutral-300">
       <Header />
       <main className="h-full w-full">
         {" "}
